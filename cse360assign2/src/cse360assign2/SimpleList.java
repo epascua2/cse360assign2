@@ -3,11 +3,13 @@
  * School ID: 1213015724
  * Class: CSE 360
  * Date: 2/10/2020
- * Purpose: The purpose of this program was to exercise our knowledge on creating classes,
- * as well as learning how to use JUNIT test cases.
+ * Purpose: The purpose of this program was to exercise our knowledge on creating classes, as well
+ * as uploading to github.
  * 
  */
 package cse360assign2;
+
+import java.util.Arrays;
 
 public class SimpleList
 {
@@ -21,12 +23,16 @@ public class SimpleList
 public void add(int value) //value is the number to be added into the array
 	{
 		//create temporary array to hold new values
-		int tempList[] = new int[10];
+	int tempList[] = new int[10];
 		
-		if(count != 10) 
+		if(count < list.length) 
 		{
+			//checks to see if the array got resized
+			if(list.length > 10)
+			//resize array
+			tempList = new int[list.length];
 		//first shift the array
-		for (int i = 0; i <= count; i++) // for loop to slide everything in the array
+		for (int i = 0; i <= count ; i++) // for loop to slide everything in the array
 		{
 			
 			// if first value in the array plug in value
@@ -41,60 +47,62 @@ public void add(int value) //value is the number to be added into the array
 		}
 		else 
 		{
-			//if the list is full, sets the first value in the array to the value being passed
-			tempList[0] = value;
+			//resize array to be 50% larger
+			tempList = new int[list.length + list.length / 2];
+			
 			//starting from the 2nd value, put the previous value in the list into the tempList
-			for (int i = 1; i < count; i++)
+			for (int i = 0; i <= count; i++)
 			{
+				if (i == 0)
+				//if the list is full, sets the first value in the array to the value being passed
+				tempList[0] = value;
+				else
 				tempList[i] = list[i-1];
+	
 			}
+			//increments count
+			count++;
+			
 		}
 		
 		
 		// copies values of temporary list into list
 		list = tempList;
-		
-		
+
 	}
 
 //need to fix
 public void remove(int rmvalue)
 	{
-		//initialize flag to check to see when the value to be deleted is found
-		boolean flag = false;
-		
-		//creates a new temporary list
-		int tempList[] = new int[10];
-		//iterates through the array
-		for(int i = 0; i < count - 1 ; i++)
-		{
-			/* if the value to be removed = the value at i in the list,
-			 * put the value at list[i+1] into the current value of tempList
-			 *  and trigger the flag */
-			
-			if(list[i] == rmvalue)
-			{
-				tempList[i] = list[i+1];
-				flag = true;
-			}
-			/* if the flag has been triggered, the value to be deleted has been found,
-			 * and put the value at list[i+1] into the current location of tempList */
-			else if(flag == true)
-			{
-				tempList[i] = list[i + 1];
-			}
-			/* if the flag has not been triggered, then the values in the tempList 
-			 * are going to be the same value of the original list */
-			else if (flag == false)
-				tempList[i]= list[i];		
+	int deletionIndex = search(rmvalue); // if -1, do nothing
+	
+	if(deletionIndex != -1) //checks to see if the value to delete is in the array 
+	{
+		//slides the values to the left
+		for (int i = deletionIndex; i < count-1; i++)
+		{ 
+			list[i] = list[i + 1]; 
 		}
 		
-		//fills in the list with the values of tempList
-		list = tempList;
-		
-		//decrements count
+		list[count-1] = 0; //removes the last value
 		count--;
 	}
+	
+	// checks to see if their are more than 25% empty spaces 
+	if(list.length - count > list.length/4)
+	{
+		int[] tempList = new int[list.length - list.length/4]; //decrease by 25%
+		for(int i = 0; i < count; i++)
+		{
+			tempList[i] = list[i];
+		}
+		list = tempList;	//set list to be equal to tempList
+	}
+
+}
+	
+		
+	
 
 	int count()
 	{	//return the integer value of count
@@ -147,6 +155,50 @@ public void remove(int rmvalue)
 		}
 		//returns the return value
 		return returnVal;	
+	}
+	public void append(int numAppend)
+	{
+		int temporaryList[] = new int[list.length];
+		temporaryList = Arrays.copyOf(list, list.length + 1);
+		temporaryList[temporaryList.length - 1] = numAppend;
+		list = temporaryList;
+	}
+	public int first()	//returns the first value in the array
+	{
+		boolean empty = true;
+		for (Object values : list)	 //iterates through list to check to see if its empty
+		{
+			if(values != null)
+			{
+				empty = false;
+			}
+		}
+		if (empty == false)
+			return -1;
+		else
+			return list[0];
+		
+	}
+	public int last() // returns the last value in the array
+	{
+		boolean empty = true;
+		for (int values : list)	//checks to see if list is empty or full of zeroes
+		{
+			if(values == 0)
+			{
+				empty = false;
+			}
+		}
+		if (empty == false)
+			return -1;
+		else
+			return list[list.length - 1];
+		
+	}
+	
+	public int size()	//returns the size of the array
+	{
+		return list.length;
 	}
 
 }
