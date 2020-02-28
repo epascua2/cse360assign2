@@ -5,7 +5,7 @@
  * Date: 2/10/2020
  * Purpose: The purpose of this program was to exercise our knowledge on creating classes, as well
  * as uploading to github.
- * 
+ * https://github.com/epascua2/cse360assign2
  */
 package cse360assign2;
 
